@@ -146,9 +146,7 @@ public partial class AdminESP
             if (player is null 
             || player.IsValid is not true 
             || player.Connected is not PlayerConnectedState.PlayerConnected) return;
-
-            //force hiding the glowing props no matter what upon spawn(this is mostly ignored on the first spawn of the round)
-            toggleAdminESP[player.Slot] = false;
+            
         });
 
         return HookResult.Continue;
@@ -156,17 +154,7 @@ public partial class AdminESP
 
     public HookResult OnRoundStart(EventRoundStart @event, GameEventInfo info)
     {
-
-        for (int i = 0; i < cachedPlayers.Count(); i++) {
-
-            if (cachedPlayers[i] is null || cachedPlayers[i].IsValid is not true) continue;
-
-            if (toggleAdminESP[cachedPlayers[i].Slot] && Config.SkipSpectatingEsps) 
-                continue;
-            
-            toggleAdminESP[cachedPlayers[i].Slot] = false;
-
-        }
+        
 
         if (togglePlayersGlowing is true)
             togglePlayersGlowing = false;
@@ -182,7 +170,7 @@ public partial class AdminESP
             }
 
             //respawn the glowing props if there are espering admins and SkipSpectatingEsps is true
-            if (AreThereEsperingAdmins() is true && Config.SkipSpectatingEsps is true)
+            if (AreThereEsperingAdmins() && Config.SkipSpectatingEsps )
                 SetAllPlayersGlowing();
 
         });
