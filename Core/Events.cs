@@ -161,7 +161,7 @@ public partial class AdminESP
 
             if (cachedPlayers[i] is null || cachedPlayers[i].IsValid is not true) continue;
 
-            if (toggleAdminESP[cachedPlayers[i].Slot] is true && cachedPlayers[i].Team is CsTeam.Spectator && Config.SkipSpectatingEsps is true) 
+            if (toggleAdminESP[cachedPlayers[i].Slot] && Config.SkipSpectatingEsps) 
                 continue;
             
             toggleAdminESP[cachedPlayers[i].Slot] = false;
