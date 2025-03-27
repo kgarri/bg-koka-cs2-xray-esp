@@ -158,7 +158,7 @@ public partial class AdminESP
 
         if (togglePlayersGlowing is true)
             togglePlayersGlowing = false;
-
+        
         //check if there are espering admins and if SkipSpectatingEsps is true, to restore the glowing props
         Server.NextFrame(() => {
 
@@ -166,12 +166,10 @@ public partial class AdminESP
             if (AreThereEsperingAdmins() is false) {
 
                 RemoveAllGlowingPlayers();
-                return;
             }
-
-            //respawn the glowing props if there are espering admins and SkipSpectatingEsps is true
-            if (AreThereEsperingAdmins() && Config.SkipSpectatingEsps )
-                SetAllPlayersGlowing();
+            
+            Console.WriteLine("Setting All Players Glowing");
+            SetAllPlayersGlowing();
 
         });
 
