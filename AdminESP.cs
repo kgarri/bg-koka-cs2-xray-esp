@@ -65,7 +65,13 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
         for (int i = 0; i < toggleAdminESP.Length; i++) toggleAdminESP[i] = false;
         RemoveAllGlowingPlayers();
     }
-
+    [ConsoleCommand("css_esp_on", "Enables ESP for everyone")]
+    [CommandHelper(minArgs: 0, "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnToggleAllEspOn(CCSPlayerController? adminPlayer, CommandInfo command)
+    {
+        for (int i = 0; i < toggleAdminESP.Length; i++) toggleAdminESP[i] = true;
+        SetAllPlayersGlowing();
+    }
     public override void Unload(bool hotReload)
     {
 
