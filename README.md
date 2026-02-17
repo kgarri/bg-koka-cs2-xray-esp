@@ -8,6 +8,8 @@ Like any other CSS plugin;
 ## Commands
 - `css_esp <target_player_username> <bool>` - `Toggle ESP` - toggle seeing players behind walls while spec/dead(allowed only for flag @css/ban + spec team; if AllowDeadAdminESP is set to true dead admins can also toggle esp)
 - `css_esp_off` - Turns off ESP for all players
+- `css_esp_on` - Turns on ESP for all players
+
 
 ## Configuration (`counterstrikesharp/configs/plugins/AdminESP` and auto-generated)
 - "debug_mode" - `not used`
