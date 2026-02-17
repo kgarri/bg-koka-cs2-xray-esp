@@ -148,6 +148,8 @@ public partial class AdminESP
             || player.Connected is not PlayerConnectedState.PlayerConnected) return;
             
         });
+        
+        SetPlayerGlowing(player, player.TeamNum);
 
         return HookResult.Continue;
     }
