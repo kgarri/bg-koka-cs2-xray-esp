@@ -12,7 +12,7 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
 {
     public override string ModuleName => "Admin ESP";
     public override string ModuleAuthor => "AquaVadis";
-    public override string ModuleVersion => "1.1.1s";
+    public override string ModuleVersion => "1.2.0s";
     public override string ModuleDescription => "Plugin uses code borrowed from CS2Fixes / cs2kz-metamod / hl2sdk / unknown cheats and xstage from CS# discord";
 
     public bool[] toggleAdminESP = new bool[64];
@@ -58,6 +58,13 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
         
     }
 
+    [ConsoleCommand("css_esp_off", "Disables ESP for everyone")]
+    [CommandHelper(minArgs: 0, "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnToggleAllEspOff(CCSPlayerController? adminPlayer, CommandInfo command)
+    {
+        for (int i = 0; i < toggleAdminESP.Length; i++) toggleAdminESP[i] = false;
+        RemoveAllGlowingPlayers();
+    }
 
     public override void Unload(bool hotReload)
     {
@@ -66,17 +73,18 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
     }
 
     [ConsoleCommand("css_esp", "Toggle Admin ESP")]
-    [CommandHelper(minArgs: 1,"[name]", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    [CommandHelper(minArgs: 2,"[name] [bool]", whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public void OnToggleAdminEsp(CCSPlayerController? adminPlayer, CommandInfo command)
     {
         String playerName = command.ArgByIndex(1);
+        bool toggleESP = command.ArgByIndex(2) == "true";
         CCSPlayerController player = GetPlayerFromUserName(playerName);
 
         if (player is null || player.IsValid is not true) return;
 
         if (AdminManager.PlayerHasPermissions(adminPlayer, Config.AdminFlag) is not true) {
 
-            SendMessageToSpecificChat(adminPlayer, msg: "Admin ESP can only be used from {GREEN}admins{DEFAULT}!", print: PrintTo.Chat);
+            SendMessageToSpecificChat(adminPlayer!, msg: "Admin ESP can only be used from {GREEN}admins{DEFAULT}!", print: PrintTo.Chat);
             return;  
         }
 
@@ -84,7 +92,7 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
             
             case true:
                 
-                    toggleAdminESP[player.Slot] = !toggleAdminESP[player.Slot];
+                    toggleAdminESP[player.Slot] = toggleESP;
 
                     if (toggleAdminESP[player.Slot] is true) {
                         
@@ -103,6 +111,7 @@ public sealed partial class AdminESP : BasePlugin, IPluginConfig<Config>
                     
 
                     SendMessageToSpecificChat(player, msg: $"Admin ESP has been " + (toggleAdminESP[player.Slot] ? "{GREEN}enabled!" : "{RED}disabled!"), print: PrintTo.Chat); 
+                    SendMessageToSpecificChat(adminPlayer! , msg: $"Admin ESP has been " + (toggleAdminESP[player.Slot] ? "{GREEN}enabled!" : "{RED}disabled!"), print: PrintTo.Chat); 
                     return;
             
             case false:
